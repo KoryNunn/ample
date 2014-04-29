@@ -74,14 +74,14 @@ ParenthesesCloseToken.tokenise = function(substring) {
 function ParenthesesOpenToken(){}
 ParenthesesOpenToken = createSpec(ParenthesesOpenToken, Token);
 ParenthesesOpenToken.tokenPrecedence = 1;
-ParenthesesOpenToken.prototype.parsePrecedence = 5;
+ParenthesesOpenToken.prototype.parsePrecedence = 2;
 ParenthesesOpenToken.prototype.name = 'ParenthesesOpenToken'
 ParenthesesOpenToken.tokenise = function(substring) {
     if(substring.charAt(0) === '('){
         return new ParenthesesOpenToken(substring.charAt(0), 1);
     }
 }
-ParenthesesOpenToken.prototype.parse = function(tokens, position){
+ParenthesesOpenToken.prototype.parse = function(tokens, position, parse){
     this.childTokens = [];
 
     var nextIndex = position + 1;
@@ -95,6 +95,8 @@ ParenthesesOpenToken.prototype.parse = function(tokens, position){
 
         this.childTokens.push(token);
     }
+
+    this.childTokens = parse(this.childTokens);
 
     // Remove close token
     tokens.splice(nextIndex, 1)[0]
@@ -270,7 +272,7 @@ DelimiterToken.prototype.parse = function(tokens, position){
 function OpperatorToken(){}
 OpperatorToken = createSpec(OpperatorToken, Token);
 OpperatorToken.tokenPrecedence = 2;
-OpperatorToken.prototype.parsePrecedence = 4;
+OpperatorToken.prototype.parsePrecedence = 3;
 OpperatorToken.prototype.name = 'OpperatorToken';
 OpperatorToken.prototype.parse = function(tokens, position){
     this.leftToken = tokens.splice(position-1,1)[0];
@@ -370,7 +372,7 @@ AndToken.prototype.evaluate = createOpperatorEvaluator(function(a,b){
 function IdentifierToken(){}
 IdentifierToken = createSpec(IdentifierToken, Token);
 IdentifierToken.tokenPrecedence = 3;
-IdentifierToken.prototype.parsePrecedence = 3;
+IdentifierToken.prototype.parsePrecedence = 2;
 IdentifierToken.prototype.name = 'IdentifierToken';
 IdentifierToken.tokenise = function(substring){
     var result = tokeniseIdentifier(substring);

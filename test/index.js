@@ -51,6 +51,14 @@ test("var a = 5; floor(a / 2)", function (t) {
   t.plan(1);
   t.equal(ample.evaluate(t.name), 2);
 });
+test("var a = 5; floor(a / 2) / 2", function (t) {
+  t.plan(1);
+  t.equal(ample.evaluate(t.name), 1);
+});
+test("var a = 5; 2 * floor(a / 2)", function (t) {
+  t.plan(1);
+  t.equal(ample.evaluate(t.name), 4);
+});
 test("1(1)", function (t) {
   t.plan(1);
   t.throws(function(){
