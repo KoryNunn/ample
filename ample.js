@@ -60,11 +60,10 @@ function createOpperatorEvaluator(fn) {
     };
 }
 
-function ParenthesesCloseToken(){
-}
+function ParenthesesCloseToken(){}
 ParenthesesCloseToken = createSpec(ParenthesesCloseToken, Token);
 ParenthesesCloseToken.tokenPrecedence = 1;
-ParenthesesCloseToken.prototype.parsePrecedence = 3;
+ParenthesesCloseToken.prototype.parsePrecedence = 10;
 ParenthesesCloseToken.prototype.name = 'ParenthesesCloseToken'
 ParenthesesCloseToken.tokenise = function(substring) {
     if(substring.charAt(0) === ')'){
@@ -72,11 +71,10 @@ ParenthesesCloseToken.tokenise = function(substring) {
     }
 }
 
-function ParenthesesOpenToken(){
-}
+function ParenthesesOpenToken(){}
 ParenthesesOpenToken = createSpec(ParenthesesOpenToken, Token);
 ParenthesesOpenToken.tokenPrecedence = 1;
-ParenthesesOpenToken.prototype.parsePrecedence = 2;
+ParenthesesOpenToken.prototype.parsePrecedence = 5;
 ParenthesesOpenToken.prototype.name = 'ParenthesesOpenToken'
 ParenthesesOpenToken.tokenise = function(substring) {
     if(substring.charAt(0) === '('){
@@ -272,7 +270,7 @@ DelimiterToken.prototype.parse = function(tokens, position){
 function OpperatorToken(){}
 OpperatorToken = createSpec(OpperatorToken, Token);
 OpperatorToken.tokenPrecedence = 2;
-OpperatorToken.prototype.parsePrecedence = 5;
+OpperatorToken.prototype.parsePrecedence = 4;
 OpperatorToken.prototype.name = 'OpperatorToken';
 OpperatorToken.prototype.parse = function(tokens, position){
     this.leftToken = tokens.splice(position-1,1)[0];
