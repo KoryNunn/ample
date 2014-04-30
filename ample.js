@@ -81,29 +81,13 @@ ParenthesesOpenToken.tokenise = function(substring) {
         return new ParenthesesOpenToken(substring.charAt(0), 1);
     }
 }
+var parenthesisParser = createNestingParser(ParenthesesCloseToken);
 ParenthesesOpenToken.prototype.parse = function(tokens, position, parse){
-    this.childTokens = [];
-
-    var nextIndex = position + 1;
-
-    while(!(tokens[nextIndex] instanceof ParenthesesCloseToken)){
-        if(nextIndex >= tokens.length){
-            throw "Parse error. No closing ')' found.";
-        }
-
-        var token = tokens.splice(nextIndex, 1)[0];
-
-        this.childTokens.push(token);
-    }
-
-    this.childTokens = parse(this.childTokens);
-
-    // Remove close token
-    tokens.splice(nextIndex, 1)[0]
+    parenthesisParser.apply(this, arguments);
 
     var previousToken = tokens[position-1];
 
-    if(!previousToken || previousToken instanceof SemicolonToken){
+    if(!previousToken || previousToken instanceof SemicolonToken || previousToken instanceof OpperatorToken){
         return;
     }
 
@@ -285,6 +269,9 @@ AssignemntToken.prototype.name = 'AssignemntToken';
 AssignemntToken.tokenise = createOpperatorTokeniser(AssignemntToken, '=');
 AssignemntToken.prototype.evaluate = function(scope){
     this.rightToken.evaluate(scope);
+    if(!(this.leftToken instanceof IdentifierToken)){
+        throw "ReferenceError: Invalid left-hand side in assignment";
+    }
     scope.set(this.leftToken.original, this.rightToken.result, true);
     this.result = undefined;
 };

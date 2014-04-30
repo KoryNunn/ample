@@ -47,6 +47,10 @@ test("floor(2.5)", function (t) {
   t.plan(1);
   t.equal(ample.evaluate(t.name), 2);
 });
+test("(floor(2.5) + 4) * 5", function (t) {
+  t.plan(1);
+  t.equal(ample.evaluate(t.name), 30);
+});
 test("var a = 5; floor(a / 2)", function (t) {
   t.plan(1);
   t.equal(ample.evaluate(t.name), 2);
@@ -116,4 +120,9 @@ test("true && 2", function (t) {
 test("false && 2", function (t) {
   t.plan(1);
   t.equal(ample.evaluate(t.name),false);
+});
+test("stats", function (t) {
+  t.plan(1);
+  ample.lang.printTopExpressions();
+  t.pass();
 });
