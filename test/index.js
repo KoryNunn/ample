@@ -51,6 +51,10 @@ test("(floor(2.5) + 4) * 5", function (t) {
   t.plan(1);
   t.equal(ample.evaluate(t.name), 30);
 });
+test("random()", function (t) {
+  t.plan(1);
+  t.ok(!isNaN(ample.evaluate(t.name)));
+});
 test("var a = 5; floor(a / 2)", function (t) {
   t.plan(1);
   t.equal(ample.evaluate(t.name), 2);
